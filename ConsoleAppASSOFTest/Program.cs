@@ -10,6 +10,7 @@ namespace ConsoleAppASSOFTest
     {
         static void Main(string[] args)
         {
+         =
         }
     }
 }
