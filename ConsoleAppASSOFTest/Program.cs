@@ -19,7 +19,7 @@ namespace ConsoleAppASSOFTest
             string adminApiKey = ConfigurationManager.AppSettings["SearchServiceAdminApiKey"];
             SearchServiceClient serviceClient = new SearchServiceClient(searchServiceName, new SearchCredentials(adminApiKey));
 
-            var dataSource = DataSource.AzureBlobStorage("ronanblobstorage", "DefaultEndpointsProtocol=https;AccountName=ronanblobstorage;AccountKey=Z8nPhGaeduop96WgvZ2FP6QKGNjXeN/G8RmyoJtX97Cycusq5WOaIymucItSNnrv31ChYMICh04nmyHbCmySYw==;EndpointSuffix=core.windows.net", "contactjson");
+            var dataSource = DataSource.AzureBlobStorage("ronanblobstorage", );
             //create data source
             if (serviceClient.DataSources.Exists(dataSource.Name))
             {
@@ -30,7 +30,7 @@ namespace ConsoleAppASSOFTest
 
             var definition = new Index()
             {
-                Name = "stephensindex",
+                Name = "carindex",
                 Fields = FieldBuilder.BuildForType<StephenTestModel>()
             };
             //create Index
@@ -40,7 +40,8 @@ namespace ConsoleAppASSOFTest
             }
             var index = serviceClient.Indexes.Create(definition);
 
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=ronanblobstorage;AccountKey=Z8nPhGaeduop96WgvZ2FP6QKGNjXeN/G8RmyoJtX97Cycusq5WOaIymucItSNnrv31ChYMICh04nmyHbCmySYw==;EndpointSuffix=core.windows.net");
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=ronanblobstorage;AccountKey=Z8nPhGaeduop" +
+                "96WgvZ2FP6QKGNjXeN/G8RmyoJtX97Cycusq5WOaIymucItSNnrv31ChYMICh04nmyHbCmySYw==;EndpointSuffix=core.windows.net");
             var blobClient = storageAccount.CreateCloudBlobClient();
             var container = blobClient.GetContainerReference("contactjson");
             var blobList = container.ListBlobs();
@@ -53,8 +54,10 @@ namespace ConsoleAppASSOFTest
                 keyPhrases = "key phrases",
             }).ToList();
             var batch = IndexBatch.Upload(stephensIndexsList);
-            ISearchIndexClient indexClient = serviceClient.Indexes.GetClient("index");
+            ISearchIndexClient indexClient = serviceClient.Indexes.GetClient("carindex");
             indexClient.Documents.Index(batch);
+            Console.WriteLine("Index created....");
+            Console.ReadLine();
         }
     }
 }
