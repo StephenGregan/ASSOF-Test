@@ -40,8 +40,7 @@ namespace ConsoleAppASSOFTest
             }
             var index = serviceClient.Indexes.Create(definition);
 
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=ronanblobstorage;AccountKey=Z8nPhGaeduop" +
-                "96WgvZ2FP6QKGNjXeN/G8RmyoJtX97Cycusq5WOaIymucItSNnrv31ChYMICh04nmyHbCmySYw==;EndpointSuffix=core.windows.net");
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse();
             var blobClient = storageAccount.CreateCloudBlobClient();
             var container = blobClient.GetContainerReference("contactjson");
             var blobList = container.ListBlobs();
